@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Corey Richardson" />
+        <meta name="copyright" content="Corey Richardson" />
+
+<meta name="keywords" content=", Rust, " />
+        <title>The State of Rust 0.8  · This Week in Rust
+</title>
+        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="http://this-week-in-rust.org/theme/css/style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="http://this-week-in-rust.org/theme/css/solarizedlight.css" media="screen">
+        <link rel="shortcut icon" href="http://this-week-in-rust.org/theme/images/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="http://this-week-in-rust.org/theme/images/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-57x57.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-72x72.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-114x114.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-144x144.png" />
+        <link rel="icon" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-144x144.png" />
+        <link href="http://this-week-in-rust.org/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - Full Atom Feed" />
+        <link href="http://this-week-in-rust.org/categories/Rust/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - Rust Category Atom Feed" />
+        <link href="http://this-week-in-rust.org/categories/This-Week-in-Rust/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - This Week in Rust Category Atom Feed" />
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="http://this-week-in-rust.org/"><span class=site-name>This Week in Rust</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="http://this-week-in-rust.org">Home</a></li>
+                            <li ><a href="http://this-week-in-rust.org/categories.html">Categories</a></li>
+                            <li ><a href="http://this-week-in-rust.org/tags.html">Tags</a></li>
+                            <li ><a href="http://this-week-in-rust.org/blog/archives/index.html">Archives</a></li>
+                            <li><a href="http://this-week-in-rust.org/atom.xml">Atom feed</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page_header span10 offset2">
+    <h1><a href="http://this-week-in-rust.org/blog/2013/10/06/the-state-of-rust-08/"> The State of Rust 0.8  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            <p>Another 3 months, another release. This is the first release that I've
+witnessed in its entirety! This is a summary of Rust: its compiler,
+libraries, documentation, and community. (<a href="http://rust-lang.org">What is
+Rust?</a>)</p>
+<!-- more -->
+
+<h1>Compiler</h1>
+<p>The compiler is faring well. It received a lot of attention in compile speed,
+although memory usage regressed significantly. It is now mostly fixed in
+master. Time compiling <code>fn main() { }</code> went from 172ms to 112ms on my box.
+When compiling programs of any significance, the gap is much larger. There's
+also been some thought put into parallelizing rustc. Michael Woerister's GSoC
+project was debuginfo, and it's almost in a fully-working state. As of 0.8,
+it's not completely baked -- libstd can't be compiled with it, and stepping
+through code isn't perfect -- but it's a huge step forward, and he created an
+extensive testsuite, so it shouldn't regress. The pretty printer hasn't seen
+much improvement. Default methods, one of the major things Michael Sullivan
+worked on over the summer, are in a much better state. If there are any
+remaining bugs in them, I haven't seen them.</p>
+<h1>Iterators</h1>
+<p>Iterators are hugely improved for 0.8. The <code>for</code> loop syntax now uses the
+Iterator trait. Additionally, most uses of vector iterators now compile to the
+exact same code that indexing or iteration would in C or C++, including the
+ability to be vectorized. Additionally, they now use default methods instead
+of extension implementations. A bunch of other extensions to Iterator were
+added, such as DoubleEndedIterator and RandomAccessIterator.</p>
+<h1>Documentation</h1>
+<p>The documentation is in a much better state than it was 3 months ago. The new
+rustdoc was started and finished. I started it, and Alex Crichton really
+polished and finished it the last two weeks before the release. The API
+documentation is now navigable, and one can actually see the relationship
+between various types. A bunch of work also went into the tutorials, yielding
+three new documents: error handling and conditions, iterators and containers,
+and rustpkg.</p>
+<h1><code>rustpkg</code></h1>
+<p>Rustpkg continues to advance. Tim put out the call for community involvement,
+and it's getting significant traction in actual libraries. There are still a
+few kinks when using it for development, but when just fetching and building
+dependencies, it works very well. Servo is porting its whole mini-ecosystem
+over to rustpkg, uncovering bunches of problems and deficiencies in the
+process. If you're interested in helping out with Rust, rustpkg is a major
+area. Tim is also super nice, and will happily help you get into the codebase.</p>
+<h1>Libraries</h1>
+<p>Rust is slowly accreting more and more useful libraries: mostly coming from
+the gamedev community, but sometimes other useful things as well. The
+new runtime has completely replaced the old, a significant step forward for
+Rust's maturity. <code>rust-http</code> is making some really nice strides, as well as
+the opengl bindings. The standard libraries are becoming nicer to use.
+<code>std::run</code>, in particular, stands out to me as something that's quite easy to
+use, and <code>std::str</code> saw a lot of work making it more correct.</p>
+<h1>The Future</h1>
+<p>This was a great release cycle, and I think the next one will be even better.
+Alex Crichton was hired as a full-time Rust developer, and he has been doing a
+lot of important work that just would have taken a while to happen otherwise.
+I'm very optimistic about this release, much more so than 0.7. I think we
+might be able to hit milestone 1 for 0.9 or 0.10, though that's just
+speculation on my part.</p>
+<h1>Is Rust Ready?</h1>
+<p>No. Rust is approaching maturity, but it isn't there yet. There are still
+backwards-incompatible changes being made to try and get to milestone 2.  The
+major things that come to mind are closure reform and privacy overhaul (which
+is being worked on in master <a href="https://github.com/mozilla/rust/pull/9735">right
+now</a>). Additionally, people in the
+gamedev community are starting to <a href="http://www.reddit.com/r/rust/comments/1nxs1h/the_state_of_rust_08/ccnb8ya">hit walls with the type
+system</a>.
+Those probably won't be fixed in the time leading up to 1.0, but this is also
+speculation.</p>
+<p>Experimenting with Rust is becoming more viable as time goes on, but using it
+in production is a bad idea, especially if "low maintenance" is at all
+valuable.</p>
+            <aside>
+            <hr/>
+            <nav>
+            <ul class="articles_timeline">
+ 
+                <li class="previous_article">« <a href="http://this-week-in-rust.org/blog/2013/10/06/this-week-in-rust-18/" title="Previous: This Week in Rust 18">This Week in Rust 18</a></li>
+ 
+                <li class="next_article"><a href="http://this-week-in-rust.org/blog/2013/10/12/this-week-in-rust-19/" title="Next: This Week in Rust 19">This Week in Rust 19</a> »</li>
+            </ul>
+            </nav>
+            </aside>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+ 
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2013-10-06T20:32:00">Oct 6, 2013</time>
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#Rust-ref">Rust</a> 
+
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    </body>
+</html>

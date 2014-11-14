@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Corey Richardson" />
+        <meta name="copyright" content="Corey Richardson" />
+
+<meta name="keywords" content=", Rust, " />
+        <title>The State of Rust 0.9  · This Week in Rust
+</title>
+        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="http://this-week-in-rust.org/theme/css/style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="http://this-week-in-rust.org/theme/css/solarizedlight.css" media="screen">
+        <link rel="shortcut icon" href="http://this-week-in-rust.org/theme/images/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="http://this-week-in-rust.org/theme/images/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-57x57.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-72x72.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-114x114.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-144x144.png" />
+        <link rel="icon" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-144x144.png" />
+        <link href="http://this-week-in-rust.org/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - Full Atom Feed" />
+        <link href="http://this-week-in-rust.org/categories/Rust/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - Rust Category Atom Feed" />
+        <link href="http://this-week-in-rust.org/categories/This-Week-in-Rust/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - This Week in Rust Category Atom Feed" />
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="http://this-week-in-rust.org/"><span class=site-name>This Week in Rust</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="http://this-week-in-rust.org">Home</a></li>
+                            <li ><a href="http://this-week-in-rust.org/categories.html">Categories</a></li>
+                            <li ><a href="http://this-week-in-rust.org/tags.html">Tags</a></li>
+                            <li ><a href="http://this-week-in-rust.org/blog/archives/index.html">Archives</a></li>
+                            <li><a href="http://this-week-in-rust.org/atom.xml">Atom feed</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page_header span10 offset2">
+    <h1><a href="http://this-week-in-rust.org/blog/2014/01/12/the-state-of-rust-09/"> The State of Rust 0.9  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            <p><a href="http://www.rust-lang.org/">Rust</a> is a systems language pursuing the trifecta:
+safe, concurrent, and fast. This is my post-mortem of the past 3 months, the
+current status of Rust, and its future.</p>
+<!-- more -->
+
+<h1>Compiler</h1>
+<p>The compiler saw a fair bit of work this release cycle. Some polish has gone
+into <code>mut</code> in patterns. For example, <code>let (mut x, y) = foo();</code> now works as
+expected. We now have "feature gates", or feature flags, that let us mark
+certain features as either deprecated or experimental and subject to change.
+<code>@mut</code> has been removed. Slice representation has been optimized (we now store
+number of elements, not number of bytes). Soundness bugs have been fixed, and
+some bugs in our name resolution have been patched up. We have a dead code
+warning, stability annotations, crate introspection, and lots more.</p>
+<p>On top of all that, we also have support for static linking and LTO. Compiler
+performance has further improved. From the 112ms compiling <code>fn main() { }</code> in
+0.8, we now do 91ms with static linking (the default) and 68ms for dynamic
+linking (<code>-Z prefer-dynamic</code>). Our debuginfo is in a much better state. The
+entire codebase (compiler + standard library + tools) compiles with it, and
+<a href="https://github.com/mozilla/servo/">Servo</a> compiles with it by default.</p>
+<h1>Runtime</h1>
+<p>The runtime has seen tons of work this release. <code>std::io</code> has been swapped
+over to the new runtime, which is written entirely in Rust. We now support
+both 1:1 and M:N threading models, their respective runtimes supplied by
+"libnative" and "libgreen". libgreen (the "old new runtime") has seen some
+performance improvements. Chris Morgan reports that the scalability of his
+<a href="https://github.com/chris-morgan/rust-http/">rust-http</a> benchmarks has
+improved from 1.25x to 1.75x from 1 to 8 concurrent request handlers. On my
+machine, using libnative gives an impressive performance boost, pushing us
+ahead of go's performance (graph below). libnative has yet to see any optimization work.
+David Renshaw reports roughly a 2x performance increase on his <a href="http://dwrensha.github.io/capnproto-rust/2013/11/16/benchmark.html">capn proto
+benchmark</a>
+when using libnative for I/O.</p>
+<noscript>
+    <img src="https://docs.google.com/a/octayn.net/spreadsheet/oimg?key=0ArjzeYh7LqL2dENRREdRbDljajR4LWt1RlozM2YyY0E&oid=1&zx=xnqmqanhavt" />
+    <p>(This would be interactive if you had JavaScript enabled)</p>
+</noscript>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/static/modules/gviz/1.0/chart.js"> {"dataSourceUrl":"//docs.google.com/a/octayn.net/spreadsheet/tq?key=0ArjzeYh7LqL2dENRREdRbDljajR4LWt1RlozM2YyY0E&transpose=0&headers=1&range=A1%3AE6&gid=0&pub=1","options":{"titleTextStyle":{"bold":true,"color":"#000","fontSize":16},"series":{"0":{"errorBars":{"errorType":"none","magnitude":10}}},"animation":{"duration":500},"width":600,"hAxis":{"title":"Concurrency (\"threads\")","useFormatFromData":true,"minValue":null,"viewWindowMode":null,"viewWindow":null,"maxValue":null},"vAxes":[{"useFormatFromData":true,"title":"Requests / second","minorGridlines":{"count":"4"},"minValue":null,"gridlines":{"count":"5"},"logScale":false,"viewWindow":{"max":null,"min":null},"maxValue":null},{"useFormatFromData":true,"minValue":null,"logScale":false,"viewWindow":{"max":null,"min":null},"maxValue":null}],"booleanRole":"certainty","title":"rust-http comparison benchmark","height":371,"domainAxis":{"direction":1},"legend":"right","focusTarget":"series","useFirstColumnAsDomain":true,"isStacked":false,"tooltip":{"trigger":"none"}},"state":{},"view":{"columns":[{"calc":"stringify","type":"string","sourceColumn":0},1,2,3,4]},"isDefaultVisualization":false,"chartType":"ColumnChart","chartName":"Chart 1"} </script>
+
+<p>You can run the benchmarks yourself. <code>cd comparisons; python run.py</code>. You'll
+need to build rust-http first (<code>make</code>), and have go, nodejs, and ab (apache
+bench) installed.</p>
+<h1>Documentation</h1>
+<p>Our documentation hasn't been in the best state in the past. It still isn't
+where it should be, but <a href="http://static.rust-lang.org/doc/master/index.html">they have been
+reorganized</a>, on top of
+seeing the usual work. We're in the process of moving all of the documentation
+from the wiki onto that site, to make it easier to find and search. Steve
+Klabnik gave a <a href="https://air.mozilla.org/rust-meetup-december-2013/">critical but very constructive
+presentation</a> at the Bay
+Area meetup about what we are doing wrong and how we can improve. At the same
+meetup, Chris Morgan talked about the technologies we use in our documentation
+stack. In the long run, the consensus seems to be that reStructuredText and
+Sphinx are they way forward. Thanks to the rustdoc rewrite, it will be able to
+have first-class status as a documentation backend.</p>
+<h1>The Future</h1>
+<p>For 0.10, we have <a href="http://smallcultfollowing.com/babysteps/blog/2014/01/05/dst-take-5/">Dynamically Sized Types
+(DST)</a> to
+look forward to, as well as the removal of <code>@</code> pointers. <code>box</code>, aka "placement
+new", along with smart pointer sugar (overloadable dereferencing/borrowing),
+should also be in by then. We may also see an actual garbage collector.</p>
+<h1>Is Rust Ready Yet?</h1>
+<p>Nope. It still has some work to do. 1.0 is estimated before the end of 2014,
+though that may slip depending on how things land. An early estimate puts the
+release over the summer! We still need a robust package manager. We now have
+<a href="http://rust-ci.org/">rust-ci</a>, which makes it easy to keep code up to date,
+and know if a library is up to date.</p>
+<p>The breaking changes, especially language changes, are slowing down, besides
+bug fixes. The standard library is also starting to shake itself out, though
+it still has a lot of work before they will be stable. There are currently two
+known uses of Rust in production: <a href="http://www.tilde.io/">Tilde</a> is using it in
+<a href="https://www.skylight.io/">Skylight</a>, and <a href="http://opendns.com">OpenDNS</a> is
+using it for <a href="http://labs.umbrella.com/2013/10/04/zeromq-helping-us-block-malicious-domains/">real-time data
+processing</a>.</p>
+<p>It has been a good release, and the next will be even better. Want to get
+involved? <a href="https://github.com/mozilla/rust/wiki/Note-guide-for-new-contributors">We love
+contributions</a>.
+Want to follow development? I post a <a href="http://cmr.github.io/blog/categories/this-week-in-rust/">weekly
+newsletter</a>
+summarizing the important changes. There is also a
+<a href="http://reddit.com/r/rust">subreddit</a>. Here's to an awesome 0.10!</p>
+            <aside>
+            <hr/>
+            <nav>
+            <ul class="articles_timeline">
+ 
+                <li class="previous_article">« <a href="http://this-week-in-rust.org/blog/2014/01/11/this-week-in-rust-32/" title="Previous: This Week in Rust 32">This Week in Rust 32</a></li>
+ 
+                <li class="next_article"><a href="http://this-week-in-rust.org/blog/2014/01/18/this-week-in-rust-33/" title="Next: This Week in Rust 33">This Week in Rust 33</a> »</li>
+            </ul>
+            </nav>
+            </aside>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+ 
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2014-01-12T21:13:00">Jan 12, 2014</time>
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#Rust-ref">Rust</a> 
+
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    </body>
+</html>

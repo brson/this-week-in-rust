@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Corey Richardson" />
+        <meta name="copyright" content="Corey Richardson" />
+
+<meta name="keywords" content="rust, programming, This Week in Rust, " />
+        <title>This Week in Rust 17  · This Week in Rust
+</title>
+        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="http://this-week-in-rust.org/theme/css/style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="http://this-week-in-rust.org/theme/css/solarizedlight.css" media="screen">
+        <link rel="shortcut icon" href="http://this-week-in-rust.org/theme/images/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="http://this-week-in-rust.org/theme/images/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-57x57.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-72x72.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-114x114.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-144x144.png" />
+        <link rel="icon" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-144x144.png" />
+        <link href="http://this-week-in-rust.org/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - Full Atom Feed" />
+        <link href="http://this-week-in-rust.org/categories/Rust/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - Rust Category Atom Feed" />
+        <link href="http://this-week-in-rust.org/categories/This-Week-in-Rust/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - This Week in Rust Category Atom Feed" />
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="http://this-week-in-rust.org/"><span class=site-name>This Week in Rust</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="http://this-week-in-rust.org">Home</a></li>
+                            <li ><a href="http://this-week-in-rust.org/categories.html">Categories</a></li>
+                            <li ><a href="http://this-week-in-rust.org/tags.html">Tags</a></li>
+                            <li ><a href="http://this-week-in-rust.org/blog/archives/index.html">Archives</a></li>
+                            <li><a href="http://this-week-in-rust.org/atom.xml">Atom feed</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page_header span10 offset2">
+    <h1><a href="http://this-week-in-rust.org/blog/2013/09/30/this-week-in-rust-17/"> This Week in Rust 17  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            <p>Welcome to another issue of <em>This Week in Rust</em>! This week saw the release of
+0.8, the removal of <code>@fn</code>, and a bunch of other changes. The tutorial has been
+updated significantly, surrounding pointers and boxes, so you should re-read
+those sections if you're still feeling shaky on when you should use which.</p>
+<!-- more -->
+
+<h1>What's cooking on master?</h1>
+<p>There were 79 PRs merged this week.</p>
+<h2>Breaking changes</h2>
+<ul>
+<li><code>printf!</code> and <code>printfln!</code> have been
+  <a href="https://github.com/mozilla/rust/pull/9550">removed</a>.</li>
+<li><code>continue</code> is now a keyword, a <a href="https://github.com/mozilla/rust/pull/9504">synonym for
+  <code>loop</code></a>, preceeding <code>loop</code>'s
+  removal (https://github.com/mozilla/rust/issues/9467)</li>
+<li>Item visibility is <a href="https://github.com/mozilla/rust/pull/9432">properly encoded in
+  metadata</a>, so code which used
+  private items that may have worked before is now rejected.</li>
+<li>Char literals which should have been escaped <a href="https://github.com/mozilla/rust/pull/9335">are now rejected when they
+  aren't escaped</a>.</li>
+<li><code>impl Foo for T;</code> is now <a href="https://github.com/mozilla/rust/pull/9336">disallowed</a>.
+  Use <code>impl Foo for T {}</code>.</li>
+<li><code>@fn</code> has been <a href="https://github.com/mozilla/rust/pull/9310">removed from the
+  language</a>. Replace it with
+  <code>@Trait</code> objects, if you really need <code>@fn</code> (you probably don't).</li>
+<li><code>start</code> <a href="https://github.com/mozilla/rust/pull/9301">no longer takes a crate
+  map</a>.</li>
+<li>Some more keywords have been
+  <a href="https://github.com/mozilla/rust/pull/9389">reserved</a>: <code>alignof</code>,
+  <code>offsetof</code>, and <code>sizeof</code>.</li>
+</ul>
+<h2>Everything else</h2>
+<ul>
+<li>A ton of documentation work was put in this week. The box section of the
+  tutorial has been <a href="https://github.com/mozilla/rust/pull/9589">rewritten</a>,
+  and there's a new <a href="https://github.com/mozilla/rust/pull/9439">rustpkg
+  tutorial</a> too. The module
+  tutorial saw the file section
+  <a href="https://github.com/mozilla/rust/pull/9398">extended</a>. There was a bunch of
+  module documentation updated/added too.</li>
+<li>rustdoc(_ng) also saw a lot of work. It <a href="https://github.com/mozilla/rust/pull/9402">completely
+  replaced</a> the old rustdoc, as
+  well as seeing a <a href="https://github.com/mozilla/rust/pull/9577">lot</a> of
+  <a href="https://github.com/mozilla/rust/pull/9475">fixes</a>. Huge thanks to Alex
+  Crichton for all the work with it!</li>
+<li><code>std::vec</code> has seen some <a href="https://github.com/mozilla/rust/pull/9583">nice
+  changes</a> to <code>connect_vec</code> and
+  <code>concat_vec</code> (they were really awful before).</li>
+<li><code>rustpkg test</code> is <a href="https://github.com/mozilla/rust/pull/9549">implemented</a>.</li>
+<li><code>type_use</code> has been <a href="https://github.com/mozilla/rust/pull/9538">removed</a>.
+  This did some nasty things and LLVM's <code>mergefunc</code> pass will do a better job
+  of the same optimization (once it's enabled).</li>
+<li><code>with_c_str</code> is now <a href="https://github.com/mozilla/rust/pull/9352">optimized</a>
+  to be allocation-free for short vectors.</li>
+<li>The logging system, when using the new formatting code (so <code>debug2</code> etc) is
+  <a href="https://github.com/mozilla/rust/pull/9261">allocation-free</a>.</li>
+<li><code>std::rand</code> has seen some
+  <a href="https://github.com/mozilla/rust/pull/9362">cleanup</a>, in preparation for its
+  overhaul.</li>
+</ul>
+<h1>Weekly Meeting</h1>
+<p>The <a href="https://github.com/mozilla/rust/wiki/Meeting-weekly-2013-09-24">weekly
+meeting</a>
+discussed a bunch of things, the main things of importance to me being:</p>
+<ul>
+<li><code>loop</code> -&gt; <code>continue</code></li>
+<li>Allowing nested comments</li>
+</ul>
+<h1>Announcements</h1>
+<ul>
+<li><a href="https://github.com/kenz-gelsoft/wxRust">wxRust</a> - A binding to the
+  wxWidgets toolkit.</li>
+<li><a href="http://www.reddit.com/r/rust/comments/1neu74/the_start_of_a_sinatra_clone/">widmann</a>
+  -  A Sinatra clone</li>
+<li><a href="http://www.reddit.com/r/rust/comments/1nab2s/rustdev_opengl_glrs_updated_with_command_line/">gl-rs</a>
+  has been updated to generate only bindings for a select version / set of
+  extensions.</li>
+<li><a href="http://www.reddit.com/r/rust/comments/1n8y5b/debugging_rust_in_eclipse/">Debugging Rust in
+  Eclipse</a>
+  - Michael Woerister's final GSoC post. He did really great work this
+  summer!</li>
+<li><a href="https://github.com/steveklabnik/rust_for_rubyists">Rust for Rubyists</a> has
+  been open sourced!</li>
+<li>The <a href="https://code.google.com/p/claymore-game/">Claymore</a> project has just
+  come to my attention. Apparently it has been going on for quite some time.
+  There are some screenshots at <a href="http://claymore-dev.blogspot.com/">http://claymore-dev.blogspot.com/</a>.</li>
+<li><a href="https://github.com/JeremyLetang/rustenstein3D/">rustenstein3d</a> - a
+  Wolfenstein3D engine</li>
+<li><a href="https://github.com/eevee/clio">clio</a>, a roguelike. This one also slipped
+  under my radar for a while.</li>
+<li><a href="https://github.com/thestinger/rust-gmp">rust-gmp</a> has been updated for
+  0.8/master.</li>
+<li><a href="https://github.com/cmr/rustdoc_ng">rustdoc_ng</a>, being merged into mainline,
+  has concluded as a project.</li>
+<li>And, of course, the <a href="http://www.reddit.com/r/rust/comments/1n7q8v/08_released/">0.8
+  release</a>
+  discussion on reddit.</li>
+</ul>
+            <aside>
+            <hr/>
+            <nav>
+            <ul class="articles_timeline">
+ 
+                <li class="previous_article">« <a href="http://this-week-in-rust.org/blog/2013/09/23/this-week-in-rust-16/" title="Previous: This Week in Rust 16">This Week in Rust 16</a></li>
+ 
+                <li class="next_article"><a href="http://this-week-in-rust.org/blog/2013/10/06/this-week-in-rust-18/" title="Next: This Week in Rust 18">This Week in Rust 18</a> »</li>
+            </ul>
+            </nav>
+            </aside>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+ 
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2013-09-30T13:11:00">Sep 30, 2013</time>
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#This-Week-in-Rust-ref">This Week in Rust</a> 
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article"> 
+                <li><a href="/tags.html#programming-ref">programming
+                    <span>4</span>
+</a></li>
+                <li><a href="/tags.html#rust-ref">rust
+                    <span>3</span>
+</a></li>
+            </ul>
+
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    </body>
+</html>

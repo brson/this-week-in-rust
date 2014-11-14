@@ -82,5 +82,5 @@ TODO
 
 ## Upcoming Meetups
 
+* [Rust Paris, Nov 17](http://www.meetup.com/Rust-Paris/events/185461312/)
 * [Rust Bay Area: Cryptography and Rust, December 18th](http://www.meetup.com/Rust-Bay-Area/events/210632582/)
-

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Corey Richardson" />
+        <meta name="copyright" content="Corey Richardson" />
+
+<meta name="keywords" content=", Rust, " />
+        <title>State of Rust 0.11.0  · This Week in Rust
+</title>
+        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="http://this-week-in-rust.org/theme/css/style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="http://this-week-in-rust.org/theme/css/solarizedlight.css" media="screen">
+        <link rel="shortcut icon" href="http://this-week-in-rust.org/theme/images/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="http://this-week-in-rust.org/theme/images/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-57x57.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-72x72.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-114x114.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-144x144.png" />
+        <link rel="icon" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-144x144.png" />
+        <link href="http://this-week-in-rust.org/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - Full Atom Feed" />
+        <link href="http://this-week-in-rust.org/categories/Rust/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - Rust Category Atom Feed" />
+        <link href="http://this-week-in-rust.org/categories/This-Week-in-Rust/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - This Week in Rust Category Atom Feed" />
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="http://this-week-in-rust.org/"><span class=site-name>This Week in Rust</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="http://this-week-in-rust.org">Home</a></li>
+                            <li ><a href="http://this-week-in-rust.org/categories.html">Categories</a></li>
+                            <li ><a href="http://this-week-in-rust.org/tags.html">Tags</a></li>
+                            <li ><a href="http://this-week-in-rust.org/blog/archives/index.html">Archives</a></li>
+                            <li><a href="http://this-week-in-rust.org/atom.xml">Atom feed</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page_header span10 offset2">
+    <h1><a href="http://this-week-in-rust.org/blog/2014/07/15/state-of-rust-0.11.0/"> State of Rust 0.11.0  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            <p>Hello and welcome to the <em>State of Rust</em>.  <a class="reference external" href="http://www.rust-lang.org/">Rust</a> is a systems
+language pursuing the trifecta: safe, concurrent, and fast.</p>
+<p>Over the past 6 months since the last one of these updates was
+written, Rust has evolved significantly: the standard library was
+refactored to make Rust more convenient to use in embedded or
+bare-metal platforms, the language has been greatly simplified (moving
+most pointer types into libraries) and the package ecosystem has been
+thriving under a new package manager.</p>
+<div class="section" id="the-rust-project">
+<h2>The Rust Project</h2>
+<p>Rust is now its <a class="reference external" href="https://github.com/rust-lang/">own organization</a> on GitHub! This reflects that Rust
+is a major project with its own community and culture, and not simply
+another project under the Mozilla umbrella. Additionally, the <a class="reference external" href="https://github.com/rust-lang/meeting-minutes">meeting
+minutes</a> now live in that organization, if you're interested in
+watching those. We have also introduced a <a class="reference external" href="http://discuss.rust-lang.org/">Discourse forum</a> for
+discussing the design and implementation of Rust and its standard
+libraries.  An <a class="reference external" href="https://github.com/rust-lang/rfcs/">RFC process</a> has been introduced for proposing
+changes to the language.</p>
+<p>We now have <a class="reference external" href="http://www.rust-lang.org/install.html">official nightlies</a> and a <a class="reference external" href="http://www.rust-lang.org/rustup.sh">script that installs them</a>, which
+provides a dead-simple way to install Rust without waiting over half an hour
+for a build. Our <a class="reference external" href="http://play.rust-lang.org/">online sandbox</a> also provides instant gratification, and
+all doc examples are runnable in it.</p>
+<p>Moving on from meta-topics, many changes have happened in the language
+itself. Many features have been removed.  These and other less-major
+changes make the language simpler, more consistent, and more powerful.
+An incomplete list:</p>
+<ul class="simple">
+<li><tt class="docutils literal">do</tt> expressions</li>
+<li>The <tt class="docutils literal">Freeze</tt> kind</li>
+<li>The <tt class="docutils literal">priv</tt> keyword (everything is private-by-default)</li>
+<li>All variations of <tt class="docutils literal">&#64;</tt>-pointers. They are replaced by the library
+type, <tt class="docutils literal">Gc&lt;T&gt;</tt>, which shares many of the same problems <tt class="docutils literal">&#64;</tt> did,
+implementation-wise.</li>
+<li>All variations of <tt class="docutils literal">~</tt>-pointers. They are replaced by the library
+types, <tt class="docutils literal">Box&lt;T&gt;</tt> and <tt class="docutils literal">Vec&lt;T&gt;</tt> for <tt class="docutils literal">~T</tt> and <tt class="docutils literal">~[T]</tt>
+respectively.</li>
+<li>Dereferencing is now overloadable, via the <tt class="docutils literal">Deref</tt> and
+<tt class="docutils literal">DerefMut</tt> types. This makes creating and using smart pointers
+much more painless!</li>
+<li>A &quot;placement new&quot;, or more accurately, &quot;placement box&quot; feature has
+been added. This replaces <tt class="docutils literal">~expr</tt> and will be extensible to user
+types. <tt class="docutils literal">box 42i</tt> has type <tt class="docutils literal">Box&lt;int&gt;</tt>. This feature is still
+baking.</li>
+</ul>
+<p>The libraries have also seen a lot of love. Rather than having a
+single, monolithic <tt class="docutils literal">libextra</tt>, there are now multiple more focused
+libraries. A list is available on our fancy new <a class="reference external" href="http://doc.rust-lang.org/#libraries">documentation index
+page</a>. Of particular note, a huge amount of effort was spent
+splitting <tt class="docutils literal">libstd</tt> itself into smaller pieces. There is a (rather
+large!) subset, which lives in <tt class="docutils literal">libcore</tt> that uses no dynamic
+allocation or other such runtime features. <tt class="docutils literal">libcore</tt> is suitable for
+use in embedded, bare-metal, and other resource constrained
+environments. <tt class="docutils literal">libstd</tt> still presents a unified interface to all of
+the individual pieces, and is the stable entry point to the entire
+standard library.</p>
+<p>The compiler has also grown a plugin system, that allows for
+user-defined syntax extensions, lint passes, and exportable macros.
+This is not well documented yet, but the new <a class="reference external" href="http://doc.rust-lang.org/regex/">regex crate</a> takes
+great advantage of this to provide compile-time checked regular
+expressions that can compile <em>directly</em> into Rust code, rather than
+always running them in a virtual machine at runtime or requiring a
+complex JIT compiler for good performance.</p>
+<p>Steve Klabnik has been hired on a 6 month contract to improve our
+documentation. He has been busy filling in examples and writing our <a class="reference external" href="http://doc.rust-lang.org/guide.html">new
+guide</a>. Our documentation will be vastly improved as time goes on, in
+preparation for the big 1.0.</p>
+</div>
+<div class="section" id="the-rust-ecosystem">
+<h2>The Rust Ecosystem</h2>
+<p>Perhaps the most marked change in Rust is its community. It is growing
+faster than I could have anticipated. There are many projects being
+undertaken by groups of people who aren't also working on the compiler
+or standard library. This is a significant shift from the past, where
+trying to do a project in Rust almost forced you to improve Rust or
+abandon it. In particular:</p>
+<ul class="simple">
+<li>The <a class="reference external" href="http://zinc.rs/">Zinc</a> project is building a bare-metal ARM stack aiming at
+writing a completely safe RTOS toolkit. It uses a loadable syntax
+extension to describe the hardware features of a particular
+hardware platform.</li>
+<li>The <a class="reference external" href="http://www.piston.rs/">Piston</a> project is a growing community of game developers
+building libraries and an engine to make developing interactive
+graphical applications painless and safe.</li>
+<li>The <a class="reference external" href="http://ironframework.io/">Iron</a> project has created a Rack-inspired web framework that
+allows easily composable &quot;middleware&quot; to stack and build a robust
+web application.</li>
+</ul>
+<p>There are many other smaller libraries and projects the community is
+undertaking, however these three represent major areas that Rust is
+great for and are the largest (in terms of developers/maturity) in
+their respective spaces.</p>
+<p>Making things even better, the official package manager, <a class="reference external" href="http://crates.io/">Cargo</a>, has
+finally been released! It is only in alpha, but is maturing quickly.
+The magnificent <a class="reference external" href="http://rust-ci.org/">Rust CI</a> is tracking which repositories have Cargo
+support. Uptake has been rapid, which bodes very well for its
+continued success.</p>
+</div>
+<div class="section" id="looking-forward-is-rust-ready-yet">
+<h2>Looking Forward (&quot;Is Rust ready yet?&quot;)</h2>
+<p>Rust is <em>not</em> ready yet. It still has a few more release cycles before 1.0. In
+particular, the &quot;unboxed closure&quot; and &quot;dynamically sized types&quot; work is not
+yet complete. There are also many minor changes to improve ergonomics in the
+pipeline. That said, it is becoming more stable, and many major features are
+complete. If you want to, give it a spin, and let us know how it goes!</p>
+</div>
+
+            <aside>
+            <hr/>
+            <nav>
+            <ul class="articles_timeline">
+ 
+                <li class="previous_article">« <a href="http://this-week-in-rust.org/blog/2014/06/30/this-week-in-rust-54/" title="Previous: This Week in Rust 54">This Week in Rust 54</a></li>
+ 
+                <li class="next_article"><a href="http://this-week-in-rust.org/blog/2014/08/18/this-week-in-rust-55/" title="Next: This Week in Rust 55">This Week in Rust 55</a> »</li>
+            </ul>
+            </nav>
+            </aside>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+ 
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2014-07-15T15:40:00">Jul 15, 2014</time>
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#Rust-ref">Rust</a> 
+
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    </body>
+</html>

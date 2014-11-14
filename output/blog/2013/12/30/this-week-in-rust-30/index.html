@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Corey Richardson" />
+        <meta name="copyright" content="Corey Richardson" />
+
+<meta name="keywords" content=", This Week in Rust, " />
+        <title>This Week in Rust 30  · This Week in Rust
+</title>
+        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="http://this-week-in-rust.org/theme/css/style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="http://this-week-in-rust.org/theme/css/solarizedlight.css" media="screen">
+        <link rel="shortcut icon" href="http://this-week-in-rust.org/theme/images/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="http://this-week-in-rust.org/theme/images/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-57x57.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-72x72.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-114x114.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-144x144.png" />
+        <link rel="icon" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-144x144.png" />
+        <link href="http://this-week-in-rust.org/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - Full Atom Feed" />
+        <link href="http://this-week-in-rust.org/categories/Rust/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - Rust Category Atom Feed" />
+        <link href="http://this-week-in-rust.org/categories/This-Week-in-Rust/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - This Week in Rust Category Atom Feed" />
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="http://this-week-in-rust.org/"><span class=site-name>This Week in Rust</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="http://this-week-in-rust.org">Home</a></li>
+                            <li ><a href="http://this-week-in-rust.org/categories.html">Categories</a></li>
+                            <li ><a href="http://this-week-in-rust.org/tags.html">Tags</a></li>
+                            <li ><a href="http://this-week-in-rust.org/blog/archives/index.html">Archives</a></li>
+                            <li><a href="http://this-week-in-rust.org/atom.xml">Atom feed</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page_header span10 offset2">
+    <h1><a href="http://this-week-in-rust.org/blog/2013/12/30/this-week-in-rust-30/"> This Week in Rust 30  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            <p>Hello and welcome to another issue of <em>This Week in Rust</em>!
+<a href="http://rust-lang.org">Rust</a> is a systems language pursuing the trifecta:
+safe, concurrent, and fast. This is a weekly summary of its progress and
+community. Want something mentioned? <a href="mailto:corey@octayn.net?subject=This%20Week%20in%20Rust%20Suggestion">Send me an
+email!</a>
+Want to get involved? <a href="https://github.com/mozilla/rust/wiki/Note-guide-for-new-contributors">We love
+contributions</a>.</p>
+<p>It's been a slow week due to the holidays. In the next week or two 0.9 is
+being released. It's an exciting release, but in more subtler ways than the
+previous 3. Many small details, especially around the runtime and linking,
+have changed that make Rust faster and more flexible without necessarily being
+a breaking change. As always, the detailed changelog will have the
+nitty-gritties.</p>
+<!-- more -->
+
+<h1>What's cooking on master?</h1>
+<p>36 pull requests were merged this week. bors was feeling unwell for a bit,
+due to a deadlock in a scheduler test that was fixed today and a deadlock in
+(incorrect usage of) LLVM.</p>
+<h2>Breaking changes</h2>
+<ul>
+<li>The <code>comm</code> primitives are <a href="https://github.com/mozilla/rust/pull/11111">never <code>Freeze</code>
+anymore</a>.</li>
+<li>The <code>link</code> attribute is <a href="https://github.com/mozilla/rust/pull/11091">now
+forbidden</a> on crates. All hail
+<code>crate_id</code>!</li>
+<li><a href="https://github.com/mozilla/rust/pull/11121">All of our C++ dependencies have been
+removed</a>. This is only breaking
+because it changes the debugging experience; <code>rust_begin_unwind</code> is gone and
+<code>catch throw</code> doesn't work because we don't use C++ exceptions anymore. To set
+a breakpoint on task failure, <code>break _Unwind_RaiseException</code>.</li>
+<li>The underbelly of the runtime has been <a href="https://github.com/mozilla/rust/pull/10965">completely
+overhauled</a>. Alex wrote an <a href="https://mail.mozilla.org/pipermail/rust-dev/2013-December/007565.html">email
+to the
+list</a>
+about the practical implications of this.</li>
+<li><code>std::result::collect</code> <a href="https://github.com/mozilla/rust/pull/11098">now uses an
+iterator</a>.</li>
+<li><code>ClonableIterator</code> <a href="https://github.com/mozilla/rust/pull/11160">has been
+renamed</a> to <code>CloneableIterator</code>.</li>
+</ul>
+<h2>Other Changes</h2>
+<ul>
+<li>libnative has <a href="https://github.com/mozilla/rust/pull/11159">process and TCP</a>
+implementations.</li>
+<li>Coercion of types into trait objects <a href="https://github.com/mozilla/rust/pull/11156">is now
+supported</a>, which means <code>as
+~SomeTrait</code> and <code>as &amp;Reader</code> can be left out.</li>
+<li>I normally wouldn't mention this since it's internal to the compiler, but
+Patrick made a heroic effort to <a href="https://github.com/mozilla/rust/pull/11058">remove <code>@mut</code> from all the
+places</a>.</li>
+<li>rustdoc can <a href="https://github.com/mozilla/rust/pull/11120">now test doc
+comments</a>. See the pull request
+for details on how and what is tested (also in the rustdoc manual).</li>
+</ul>
+<h2>New contributors</h2>
+<ul>
+<li>Sébastien Paolacci</li>
+</ul>
+<h1>Meeting</h1>
+<p>There was no meeting this week due to the holiday.</p>
+<h1>This Week in Servo</h1>
+<p>Servo is a web browser engine written in Rust and is one of the primary test
+cases for the Rust language.</p>
+<p>Mozilla is on an extended holiday break until January 2nd, but we still landed
+2 PRs this week.</p>
+<h2>Notable additions</h2>
+<ul>
+<li>Jack Moffitt re-enabled building with make to enable work on cross-targeting
+ARM in <a href="https://github.com/mozilla/servo/pull/1441">#1441</a>.</li>
+<li>ms2ger cleaned up how we handle namespaces in DOM elements
+<a href="https://github.com/mozilla/servo/pull/1438">#1438</a></li>
+</ul>
+<h1>Announcements, etc</h1>
+<ul>
+<li><a href="https://mail.mozilla.org/pipermail/rust-dev/2013-December/007575.html">rust-openssl</a>
+has been formed from the union of sfackler's rust-ssl and erickt's rustcrypto.</li>
+<li><a href="http://www.lars.com/concurrency/rust/servo/2013/12/21/concurrency-rust-and-servo.html">Concurrency models, Rust, and
+Servo</a>.</li>
+<li><a href="http://words.steveklabnik.com/rust-is-surprisingly-expressive">Rust is surprisingly
+expressive</a>.</li>
+<li><a href="https://mail.mozilla.org/pipermail/rust-dev/2013-December/007486.html">irust</a>,
+a basic REPL written in Ruby.</li>
+</ul>
+            <aside>
+            <hr/>
+            <nav>
+            <ul class="articles_timeline">
+ 
+                <li class="previous_article">« <a href="http://this-week-in-rust.org/blog/2013/12/22/this-week-in-rust-29/" title="Previous: This Week in Rust 29">This Week in Rust 29</a></li>
+ 
+                <li class="next_article"><a href="http://this-week-in-rust.org/blog/2014/01/06/this-week-in-rust-31/" title="Next: This Week in Rust 31">This Week in Rust 31</a> »</li>
+            </ul>
+            </nav>
+            </aside>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+ 
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2013-12-30T00:48:00">Dec 30, 2013</time>
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#This-Week-in-Rust-ref">This Week in Rust</a> 
+
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Corey Richardson" />
+        <meta name="copyright" content="Corey Richardson" />
+
+<meta name="keywords" content="programming, rust, This Week in Rust, " />
+        <title>This Week in Rust 16  · This Week in Rust
+</title>
+        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="http://this-week-in-rust.org/theme/css/style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="http://this-week-in-rust.org/theme/css/solarizedlight.css" media="screen">
+        <link rel="shortcut icon" href="http://this-week-in-rust.org/theme/images/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="http://this-week-in-rust.org/theme/images/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-57x57.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-72x72.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-114x114.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-144x144.png" />
+        <link rel="icon" href="http://this-week-in-rust.org/theme/images/apple-touch-icon-144x144.png" />
+        <link href="http://this-week-in-rust.org/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - Full Atom Feed" />
+        <link href="http://this-week-in-rust.org/categories/Rust/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - Rust Category Atom Feed" />
+        <link href="http://this-week-in-rust.org/categories/This-Week-in-Rust/atom.xml" type="application/atom+xml" rel="alternate" title="This Week in Rust - This Week in Rust Category Atom Feed" />
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="http://this-week-in-rust.org/"><span class=site-name>This Week in Rust</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="http://this-week-in-rust.org">Home</a></li>
+                            <li ><a href="http://this-week-in-rust.org/categories.html">Categories</a></li>
+                            <li ><a href="http://this-week-in-rust.org/tags.html">Tags</a></li>
+                            <li ><a href="http://this-week-in-rust.org/blog/archives/index.html">Archives</a></li>
+                            <li><a href="http://this-week-in-rust.org/atom.xml">Atom feed</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page_header span10 offset2">
+    <h1><a href="http://this-week-in-rust.org/blog/2013/09/23/this-week-in-rust-16/"> This Week in Rust 16  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            <p>Welcome to another issue of <em>This Week in Rust</em>. We're gearing up for a 0.8
+release, tentatively planned for Thursday. Additionally, a huge welcome of
+Alex Crichton to the Rust team! He's been doing some great work, it's
+wonderful to have another full-time Rust dev.</p>
+<!-- more -->
+
+<h1>What's cooking in master?</h1>
+<p>There were 86 PRs merged this week.</p>
+<h2>rustdoc_ng</h2>
+<p>rustdoc_ng was merged into mainline and enabled as the new rustdoc, in time
+for 0.8. This makes me incredibly happy, as it marks the conclusion of my
+quest to a better rustdoc. Not to say that rustdoc is finished or perfect,
+but it's already much better than the old rustdoc. My sincere thanks go to
+Jordi Boggiano (Seldaek), who worked unceasingly to create a beautiful,
+usable frontend, and to Meret Vollenweider (meretv) for donating her amazing
+design skills. Also thanks to Huon Wilson (dbaupp) for moral support and
+creating the awesome DocFolder interface that passes over the documentation
+use. And, of course, to Alex Crichton, who pushed these past few days to port
+the static site generator to Rust and to integrate it into the build system.</p>
+<p>The new docs have replaced the old docs. You can view them <a href="http://static.rust-lang.org/doc/master/std/index.html">on the Rust
+website</a>. Still to-do
+is proper cross-crate doc hyperlinking. To run it on your own crate, build a
+recent Rust and do <code>rustdoc html path/to/your/crate.rs</code>. It will eventually be
+integrated into <code>rustpkg</code>.</p>
+<h2>Breaking changes</h2>
+<ul>
+<li><code>extra::par</code> has been <a href="https://github.com/mozilla/rust/pull/9380">removed</a>.</li>
+<li>Some unsound functional struct updates (FSU, <code>{a: 5, ..b}</code>) <a href="https://github.com/mozilla/rust/pull/9350">are now
+  disallowed</a>.</li>
+<li><code>--cfg debug</code> is no longer required. If you want to disable debug logging,
+  use <a href="https://github.com/mozilla/rust/pull/9278"><code>--cfg ndebug</code></a>.</li>
+<li>The various uses of <code>NaN</code> are now <a href="https://github.com/mozilla/rust/pull/9321">lowercased to
+  <code>nan</code></a>.</li>
+<li><code>std::util::unreachable</code> has been removed in factor of the
+  <a href="https://github.com/mozilla/rust/pull/9320"><code>unreachable!</code></a> macro.</li>
+<li><code>extra::future</code> has been <a href="https://github.com/mozilla/rust/pull/9285">cleaned
+  up</a> a bit, including some method
+  shuffling/renames.</li>
+<li><code>extra::getopts</code> has been <a href="https://github.com/mozilla/rust/pull/9267">cleaned
+  up</a> as well, with most free
+  functions now being methods.</li>
+<li>The <code>from_str</code> methods in the numeric modules have been
+  <a href="https://github.com/mozilla/rust/pull/9275">removed</a> in favor of the FromStr
+  trait and the <code>from_str</code> free function in the prelude. Same for
+  <a href="https://github.com/mozilla/rust/pull/9209"><code>from_str_radix</code></a>.</li>
+<li>The <code>Drop</code> trait now uses <a href="https://github.com/mozilla/rust/pull/9244"><code>&amp;mut
+  self</code></a>, as part of the transition
+  to by-value drops.</li>
+<li><code>extra::json</code> uses a <a href="https://github.com/mozilla/rust/pull/9231">different
+  encoding</a> when encoding/decoding
+  enums, so any Rust-generated JSON before this patch will now be rejected by
+  the decoder.</li>
+</ul>
+<h2>Other changes</h2>
+<ul>
+<li>debuginfo now works for <a href="https://github.com/mozilla/rust/pull/9168">recursive
+  types</a>.</li>
+<li>You can now <a href="https://github.com/mozilla/rust/pull/9213">pass parameters</a> to
+  the generated test with <code>rust test</code>.</li>
+<li><code>extern fn</code>s from external crates now use the <a href="https://github.com/mozilla/rust/pull/9196">declared
+  ABI</a>, rather than assuming cdecl.</li>
+<li><code>CString</code> has gained an
+  <a href="https://github.com/mozilla/rust/pull/9220"><code>as_str</code></a> method.</li>
+<li>Some <a href="https://github.com/mozilla/rust/pull/9108">overflow bugs</a> in <code>vec</code> and
+  <code>str</code> have been fixed.</li>
+<li><code>statics</code> are now <a href="https://github.com/mozilla/rust/pull/9130">properly
+  inlined</a> cross-crate.</li>
+<li>The <code>bytes!</code> macro's error reporting has been <a href="https://github.com/mozilla/rust/pull/9245">tightened
+  up</a> to make it more obvious where
+  the error is.</li>
+<li><code>rustpkg init</code> <a href="https://github.com/mozilla/rust/pull/9236">has been added</a>,
+  to create a new workspace.</li>
+<li>File IO in newrt has been <a href="https://github.com/mozilla/rust/pull/9235">massively
+  reworked</a> and is much more
+  complete than the oldrt.</li>
+<li>The exact meaning of "unsafety" <a href="https://github.com/mozilla/rust/pull/9258">is now
+  documented</a>.</li>
+<li><code>\0</code> escapes in strings <a href="https://github.com/mozilla/rust/pull/9248">is now
+  supported</a>.</li>
+<li><code>rustpkg</code> now thinks in terms of crates, not packages, to you can now have
+  <a href="https://github.com/mozilla/rust/pull/9263">multiple crates in a single
+  package</a> and have things work
+  correctly.</li>
+<li>newrt has <a href="https://github.com/mozilla/rust/pull/9260/files">pipes and process
+  support</a> now.</li>
+<li><code>format!</code> now allows <a href="https://github.com/mozilla/rust/pull/9299">trailing
+  commas</a> in its arguments.</li>
+<li>The lexer now throws <a href="https://github.com/mozilla/rust/pull/9308">vastly better
+  errors</a>.</li>
+</ul>
+<h1>Weekly Meeting</h1>
+<p>The <a href="https://github.com/mozilla/rust/wiki/Meeting-weekly-2013-09-17">weekly
+meeting</a>
+discussed quite a bit, most interesting to me was the crypto discussion,
+putting <code>macro_rules!</code> behind an experimental flag, and the default arguments
+discussion.</p>
+<h1>Project announcements etc</h1>
+<ul>
+<li><a href="https://github.com/williamw520/rustymem">rustymem</a> - a pure-rust memcached
+  library.</li>
+<li><a href="http://www.reddit.com/r/rust/comments/1myesy/where_to_learn_more_about_rusts_concurrency_model/">"Where to learn more about Rust's concurrency
+  model?"</a></li>
+<li><a href="https://raw.github.com/jeaye/q3/master/pics/016_1_animated_skele.png">q3 now has skeletal
+  animation!</a>.</li>
+</ul>
+            <aside>
+            <hr/>
+            <nav>
+            <ul class="articles_timeline">
+ 
+                <li class="previous_article">« <a href="http://this-week-in-rust.org/blog/2013/09/15/this-week-in-rust-15/" title="Previous: This Week in Rust 15">This Week in Rust 15</a></li>
+ 
+                <li class="next_article"><a href="http://this-week-in-rust.org/blog/2013/09/30/this-week-in-rust-17/" title="Next: This Week in Rust 17">This Week in Rust 17</a> »</li>
+            </ul>
+            </nav>
+            </aside>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+ 
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2013-09-23T13:08:00">Sep 23, 2013</time>
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#This-Week-in-Rust-ref">This Week in Rust</a> 
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article"> 
+                <li><a href="/tags.html#programming-ref">programming
+                    <span>4</span>
+</a></li>
+                <li><a href="/tags.html#rust-ref">rust
+                    <span>3</span>
+</a></li>
+            </ul>
+
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    </body>
+</html>
